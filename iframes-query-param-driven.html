@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Zoo Frames</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body {
+            background-color: #f0e6d2;
+            font-family: 'Arial', sans-serif;
+        }
+        h1 {
+            color: #4a3c31;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .frame-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        iframe {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        iframe:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>🦁 Safari Zoo Adventure 🐘</h1>
+    <div id="frame-container" class="frame-container"></div>
+
+    <script>
+        const animals = [
+            'Lion', 'Elephant', 'Giraffe', 'Monkey', 'Zebra', 'Penguin', 'Kangaroo', 'Tiger', 'Hippo', 'Koala',
+            'Cheetah', 'Rhino', 'Gorilla', 'Panda', 'Crocodile', 'Flamingo', 'Sloth', 'Meerkat', 'Lemur', 'Orangutan',
+            'Polar Bear', 'Red Panda', 'Chimpanzee', 'Ostrich', 'Leopard', 'Gazelle', 'Hyena', 'Toucan', 'Wallaby', 'Otter'
+        ];
+        const emojiMap = {
+                'Lion': '🦁', 'Elephant': '🐘', 'Giraffe': '🦒', 'Monkey': '🐒', 'Zebra': '🦓', 'Penguin': '🐧',
+                'Kangaroo': '🦘', 'Tiger': '🐯', 'Hippo': '🦛', 'Koala': '🐨', 'Cheetah': '🐆', 'Rhino': '🦏',
+                'Gorilla': '🦍', 'Panda': '🐼', 'Crocodile': '🐊', 'Flamingo': '🦩', 'Sloth': '🦥', 'Meerkat': '🐿️',
+                'Lemur': '🐒', 'Orangutan': '🦧', 'Polar Bear': '🐻‍❄️', 'Red Panda': '🐼', 'Chimpanzee': '🐵',
+                'Ostrich': '🐓', 'Leopard': '🐆', 'Gazelle': '🦌', 'Hyena': '🐺', 'Toucan': '🦜', 'Wallaby': '🦘', 'Otter': '🦦'
+            };
+        
+        function getRandomAnimal() {
+            return animals[Math.floor(Math.random() * animals.length)];
+        }
+
+        function getAnimalEmoji(animal) {
+            return emojiMap[animal] || '🐾';
+        }
+
+        function createIframes() {
+            const params = new URLSearchParams(window.location.search);
+            const count = parseInt(params.get('count')) || 9; // Default to 9 if not specified
+            const container = document.getElementById('frame-container');
+            const animalsStringified = JSON.stringify(animals);
+            console.log(animalsStringified);
+
+            for (let i = 1; i <= count; i++) {
+                const iframe = document.createElement('iframe');
+                iframe.id = `frame${i}`;
+                iframe.width = '250';
+                iframe.height = '150';
+                container.appendChild(iframe);
+
+                const animal = getRandomAnimal();
+                const emoji = getAnimalEmoji(animal);
+
+                const iframeContent = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+                        <style>
+                            body {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                height: 100vh;
+                                margin: 0;
+                                background-color: ${getRandomColor()};
+                                font-family: 'Arial', sans-serif;
+                            }
+                            .animal-name {
+                                font-size: 1.5em;
+                                color: #ffffff;
+                                text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+                            }
+                            .animal-emoji {
+                                font-size: 3em;
+                                margin-top: 10px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="animal-name">${animal}</div>
+                        <div class="animal-emoji">${emoji}</div>
+                    </body>
+                    </html>
+                `;
+
+                iframe.srcdoc = iframeContent;
+                    setInterval(() => {
+                        const newAnimal = getRandomAnimal();
+                        const newEmoji = getAnimalEmoji(newAnimal);
+                        iframe.contentDocument.querySelector('.animal-name').textContent = newAnimal;
+                        iframe.contentDocument.querySelector('.animal-emoji').textContent = newEmoji;
+                        iframe.contentDocument.body.style.backgroundColor = getRandomColor();
+                    }, Math.random() * 2000 + 1000);
+            }
+        }
+
+        function getRandomColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 70%, 80%)`;
+        }
+
+        createIframes();
+    </script>
+</body>
+</html>

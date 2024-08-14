@@ -1,0 +1,408 @@
+<html>
+<head>
+  <style>
+    html,
+    textarea,
+    input {
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      color: #373939;
+      background-color: #f5f6f6;
+    }
+
+    textarea,
+    input {
+      border: 1px solid #afff4a;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    #wrapper {
+      width: 600px;
+      margin-inline: auto;
+      background-color: rgba(255,255,255,.6);
+      padding: 20px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.1);
+    }
+
+    h1 {
+      margin-block: 0;
+    }
+
+    h3 {
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .special {
+      text-transform: capitalize;
+    }
+
+    .price::before {
+      content: '$';
+    }
+
+    #reflection {
+      position: fixed;
+      right: 0;
+      top: 10px;
+      width: 300px;
+      background: #e6ffc6;
+      color: #373939;
+      padding: 10px;
+      border: 1px solid #afff4a;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    #reflection > p {
+      margin-top: 0;
+    }
+
+    fieldset {
+      border: 2px solid #afff4a;
+      border-radius: 4px;
+    }
+
+    dd {
+      word-break: break-word;
+    }
+
+    iframe {
+      display: block;
+      border-width: 0;
+      height: 300px;
+    }
+
+    #grid {
+      display: flex;
+    }
+
+    #ala-carte {
+      flex-basis: 50%;
+    }
+
+    sf-address,
+    #sales-counter {
+      text-align: center;
+    }
+
+    #sales-counter {
+      margin-bottom: 0;
+    }
+
+    #items-sold {
+      border-width: 0;
+      font-family: monospace;
+    }
+
+    textarea {
+      margin-top: .5em;
+      display: block;
+    }
+
+    .hovered-item {
+      outline: 5px dashed #afff4a;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='wrapper'>
+  <h1>The Magical Restaurant</h1>
+  <p><em>Specials by the second</em></p>
+  <div id='grid'>
+    <div id='ala-carte'>
+      <h2>A la carte menu</h2>
+      <p><span>Apples</span> <span class='price'>1.00</span></p>
+      <p><span>Bananas</span> <span class='price'>0.49</span></p>
+      <p><span>Potatoes</span> <span class='price'>0.24</span></p>
+      <p><span>Water Bottles</span> <span class='price'>2.00</span></p>
+      <h3>Special</h3>
+      <p><span class='special'>Apples</span> <span class='special price'>1.00</span></p>
+      <button>Hurry, Buy It Now!</button>
+    </div>
+    <iframe srcdoc='
+        <html>
+          <style>
+            html {
+              font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+              color: #373939;
+              background-color: transparent;
+            }
+            .hovered-item {
+              outline: 4px dashed #afff4a;
+            }
+          </style>
+          <h2>Dine-in menu</h2>
+          <p>Dining hours: <span id="dining-hours">8:00am - 12:00pm</span></p>
+          <dl>
+            <dt>Apple sauce</dt>
+            <dd>Old apples mushed up, $3.49</dd>
+            <dt>Banana bread</dt>
+            <dd>Old bananas mushed up and baked, $4.49</dd>
+            <dt>Mashed potatoes</dt>
+            <dd>Unsold potatoes mashed up, $6.99</dd>
+            <dt>Still water</dt>
+            <dd>Expensive tap water, $2.99</dd>
+          </dl>
+        </html>
+      '></iframe>
+  </div>
+  <sf-address></sf-address>
+  <p id='sales-counter'>
+    <label for='items-sold'>People go bananas for our bananas: </label><input id='items-sold' />
+  </p>
+</div>
+  <div id='reflection'>
+    <p>Click on an item to highlight it in the page</p>
+    <dl id="reflection-list">
+      <!-- The reflected items should be appended to this element using <dt> for the label and <dd>
+           for the value. -->
+    </dl>
+    <fieldset>
+      <legend>CSS Selector</legend>
+      <input id='selector-label' />
+      <textarea cols='35'></textarea>
+    </fieldset>
+  </div>
+</body>
+<script>
+  class SfAddress extends HTMLElement {
+    static observedAttributes = ['address'];
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({ mode: 'open' });
+      const address = document.createElement('address');
+      const streetAddress = document.createElement('span');
+      streetAddress.id = 'street-address';
+      const cityState = document.createElement('span');
+      cityState.id = 'city-state';
+      cityState.textContent = 'San Francisco, CA';
+      const zipCode = document.createElement('span');
+      zipCode.textContent = '94102';
+      address.appendChild(streetAddress);
+      address.append(document.createElement('br'));
+      address.appendChild(cityState);
+      address.append(document.createElement('br'));
+      address.appendChild(zipCode);
+      let style = document.createElement('style');
+      style.appendChild(document.createTextNode(`
+        .hovered-item {
+          outline: 4px dashed #afff4a;
+        }
+      `));
+      shadow.appendChild(style);
+      shadow.appendChild(address);
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+      this.shadowRoot.querySelector('#street-address').textContent = newValue;
+    }
+  }
+  customElements.define("sf-address", SfAddress, { mode: 'closed' });
+
+  const specials = [
+    'apples',
+    'bananas',
+    'potatoes',
+    'water bottles',
+  ];
+  const prices = [
+    '1.00 per pound',
+    '0.49 per pound',
+    '0.24 each',
+    '2.00 each',
+  ];
+  const addresses = [
+    '123 Rosemary St',
+    '1921 Thyme Blvd',
+    '1040 Marjoram Ave',
+    '15 Garlic Rd',
+  ];
+  const food = document.querySelector('.special');
+  const price = document.querySelector('.price.special');
+  const address = document.querySelector('sf-address');
+  function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
+  const updateContents = () => {
+    food.textContent = specials[randomIntFromInterval(0, 3)];
+    price.innerHTML = prices[randomIntFromInterval(0, 3)];
+    address.setAttribute('address', addresses[randomIntFromInterval(0, 3)]);
+    document.title = `The Magical Restaurant, ${specials[randomIntFromInterval(0, 3)]} on sale now!`;
+  };
+  setInterval(() => {
+    updateContents();
+  }, 1000);
+  updateContents();
+
+  const itemsSold = document.querySelector('#items-sold');
+  let itemsSoldCount = 0;
+  const updateSalesCounter = () => {
+    itemsSold.value = `${itemsSoldCount++} bananas sold`;
+    requestAnimationFrame(updateSalesCounter);
+  };
+  updateSalesCounter();
+
+  /**
+   * Your task:
+   * Implement a basic prototype of how Magical retrieves data from a webpage.
+   * 
+   * Step 1:
+   * Write code that will reflect the following items along with a label in to the reflection
+   * sidebar's definition list (#reflection-list):
+   * ** The name of the special item, label: 'Special item' (10 points)
+   * ** The price of the special item, excluding any text that accompanies the number, label:
+   *    'Special price' (10 points)
+   * ** The title of the web page, label: 'Page title' (10 points)
+   * 
+   * Data may update on different intervals, so you should try to batch updates and not respond
+   * immediately to every change. We have provided an implementation of `debounce` for your use.
+   * (10 points)
+   *
+   * Step 2:
+   * When hovering on an item in the list, draw an outline around the source item that it is
+   * reflecting by adding the `hovered-item` class to the source item. This class should be removed
+   * when the user mouses away from the #reflection div. (10 points)
+   * 
+   * When clicking on an item in the list, show a unique selector for the item in the textarea.
+   * (10 points)
+   * 
+   * Step 3 (bonus):
+   * Reflect the following items:
+   * ** The dining hours, label: 'Dining hours' (15 points)
+   * ** The street address of the restaurant, label: 'Street address' (10 points)
+   * ** The city / state of the restaurant, label: 'City / State' (5 points)
+   * ** How many bananas the store has sold, excluding any text that accompanies the number, label:
+   *    'Bananas sold' (10 points)
+   */
+
+  function debounce(func, wait, maxWait) {
+    let timeout, lastCallTime;
+
+    return function executedFunction(...args) {
+      const now = Date.now();
+
+      if (lastCallTime && now < lastCallTime + maxWait) {
+        // If the function has been called before and the current time is less
+        // than the last call time plus maxWait, debounce as usual.
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          lastCallTime = now;
+          func(...args);
+        }, wait);
+      } else {
+        // If enough time has passed since the last execution, execute immediately and reset the
+        // lastCallTime.
+        lastCallTime = now;
+        func(...args);
+      }
+    };
+  };
+
+  // Your solution:
+  const items = [
+    { label: 'Page title', selectors: ['title'] },
+    { label: 'Special item', selectors: ['.special'] },
+    { label: 'Special price', selectors: ['.price.special'], transform: (val) => val.match(/[\d\.]+/)[0] },
+    { label: 'Dining hours', selectors: ['iframe', '#dining-hours'] },
+    { label: 'Street address', selectors: ['sf-address', '#street-address'] },
+    { label: 'City / State', selectors: ['sf-address', '#city-state'] },
+    { label: 'Bananas sold', selectors: ['#items-sold'], transform: (val) => val.match(/[\d\.]+/)[0] },
+  ];
+  const reflectionList = document.querySelector('#reflection-list');
+  const getElementFromSelectorList = (selectors) => {
+    if (!selectors) {
+      return;
+    }
+    let current = document;
+    for (let selector of selectors) {
+      current = current.querySelector(selector);
+      if (!current) {
+        break;
+      }
+
+      if (current.tagName === 'IFRAME') {
+        current = current.contentDocument;
+      } else if (current.shadowRoot) {
+        current = current.shadowRoot;
+      }
+    }
+    return current;
+  }
+  const updateRelectionList = () => {
+    reflectionList.textContent = '';
+    const fragment = document.createDocumentFragment();
+    for (let [index, item] of items.entries()) {
+      let value = '(blank)';
+      const current = getElementFromSelectorList(item.selectors);
+      if (current) {
+        value = 'value' in current ? current.value : current.textContent;
+      }
+      const dt = document.createElement('dt');
+      dt.textContent = item.label;
+      dt.dataset.itemsIndex = index;
+      const dd = document.createElement('dd');
+      dd.textContent = item.transform ? item.transform(value) : value;
+      fragment.appendChild(dt);
+      fragment.appendChild(dd);
+    }
+    reflectionList.appendChild(fragment);
+  }
+  const debouncedUpdatedReflectionList = debounce(updateRelectionList, 500, 3000);
+  const observer = new MutationObserver(() => {
+    debouncedUpdatedReflectionList();
+  });
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+  });
+  updateRelectionList();
+
+  const getRelatedItemDefinitionFromEvent = (event) => {
+    const { target } = event;
+    let dt = target.tagName === 'DT' ? target : null;
+    if (target.tagName === 'DD') {
+      dt = target.previousElementSibling;
+    }
+    if (!dt) {
+      return;
+    }
+    return items[parseInt(dt.getAttribute('data-items-index'), 10)];
+  }
+  const removeExistingHoverBorders = () => {
+    for (let item of items.filter(item => item.selectors)) {
+      const element = getElementFromSelectorList(item.selectors);
+      if (element) {
+        element.classList.remove('hovered-item');
+      }
+    }
+  }
+  reflectionList.addEventListener('mouseover', event => {
+    const relatedItemDefinition = getRelatedItemDefinitionFromEvent(event);
+    if (!relatedItemDefinition) {
+      return;
+    }
+    removeExistingHoverBorders();
+    const element = getElementFromSelectorList(relatedItemDefinition.selectors);
+    if (element) {
+      element.classList.add('hovered-item');
+    }
+  });
+  reflectionList.addEventListener('mouseleave', event => {
+    removeExistingHoverBorders();
+  })
+  reflectionList.addEventListener('click', event => {
+    const { target } = event;
+    const relatedItemDefinition = getRelatedItemDefinitionFromEvent(event);
+    if (!relatedItemDefinition) {
+      return;
+    }
+    const selectorLabelInput = document.querySelector('#selector-label');
+    selectorLabelInput.value = relatedItemDefinition.label;
+    const textArea = document.querySelector('#reflection textarea');
+    textArea.value = relatedItemDefinition.selectors.map(selector => `[${selector}]`).join(', ');
+  });
+</script>
+</html>

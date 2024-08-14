@@ -1,0 +1,23 @@
+<style>
+    body, html {
+    margin: 0;
+    padding: 0;
+    }
+</style>
+<body>
+    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+        <div style="background-color: #f00; height: 100vh;"></div>
+        <div style="background-color: #0f0; height: 100vh;"></div>
+    </div>
+</body>
+<script>
+    // When the user pressed cmd + f, the browser will go full-screen
+    document.addEventListener('keydown', function(e) {
+        if (e.keyCode == 70 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            var el = document.documentElement,
+                rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen;
+            rfs.call(el);
+        }
+    }, false);
+</script>

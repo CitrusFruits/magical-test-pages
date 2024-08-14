@@ -1,0 +1,32 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+</head>
+
+<body>
+    <main class=".container">
+        <section>
+
+            <form class="my-special-class">
+                <label for="input">Input:</label>
+                <input type="text" placeholder="Type something..." />
+            </form>
+        </section>
+    </main>
+</body>
+<script>
+    let i = 0;
+    // Replace the input every 3 seconds with a new input, but with a different colored border
+    setInterval(() => {
+        const input = document.querySelector('input');
+        const newInput = document.createElement('input');
+        const color = Math.floor(Math.random() * 16777215).toString(16);
+        newInput.setAttribute('type', 'text');
+        newInput.setAttribute('placeholder', 'Type something...');
+        newInput.style.border = '1px solid #' + color;
+        input.replaceWith(newInput);
+
+        // Replace the label with a new label indicating the color of the border
+        const label = document.querySelector('label');
+        label.textContent = `Input (${i++}):`;
+    }, 2_000);
+</script>

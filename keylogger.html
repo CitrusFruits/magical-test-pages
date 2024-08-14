@@ -1,0 +1,18 @@
+<body>
+
+    <h1>Last key: </h1>
+    <input>
+    <p></p>
+</body>
+<script>
+    document.addEventListener('keydown', (e) => {
+        document.querySelector('h1').innerHTML = `Last key: ${e.key}, value: ${e.target.value}`;
+        console.log(e.target);
+        document.querySelector('p').innerHTML += `${e.key}`;
+        e.stopPropagation();
+    }, true);
+    document.addEventListener('keydown', (e) => {
+        document.querySelector('h1').innerHTML = `Last key: ${e.key}`;
+        document.querySelector('p').innerHTML += `${e.key}`;
+    });
+</script>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+<style>
+  form>* {
+    display: block;
+    border: 1px solid black;
+    line-height: 24px;
+    margin: 5px;
+  }
+</style>
+
+<body>
+  <h1>Form</h1>
+
+  <section id="inputs">
+    <form>
+      <label>
+        Variable Label 0
+        <input value="variable content 0">
+      </label>
+      <label>
+        Variable Label 1
+        <input value="variable content 1">
+      </label>
+      <label>
+        Variable Label 2
+        <input value="variable content 2">
+      </label>
+      <label>
+        Variable Label 3
+        <input value="variable content 3">
+      </label>
+      <label>
+        Variable Label 4
+        <input value="variable content 4">
+      </label>
+      <label>
+        Variable Label 5
+        <input value="variable content 5">
+      </label>      
+    </form>
+  </section>
+</body>
+</html>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('reverse') === 'true') {
+    const labels = [...document.querySelectorAll('label')];
+    const form = document.querySelector('form');
+    form.innerHTML = '';
+    for(const label of labels.reverse()) {
+      form.appendChild(label);
+    }
+  }
+  if (urlParams.get('shuffle') === 'true') {
+    const labels = [...document.querySelectorAll('label')];
+    const form = document.querySelector('form');
+    form.innerHTML = '';
+    shuffle(labels);
+    for(const label of labels.reverse()) {
+      form.appendChild(label);
+    }
+  }
+  function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+</script>

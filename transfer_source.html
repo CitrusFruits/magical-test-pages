@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+<style>
+  form>* {
+    display: block;
+    border: 1px solid black;
+    line-height: 24px;
+    margin: 5px;
+  }
+</style>
+
+<body>
+  <h1>Variables</h1>
+  <section id="variables">
+  </section>
+
+  <h1>Form</h1>
+  <section id="form">
+    <form>
+      <input id="input-0" type="text">
+      <input id="input-1" type="email">
+      <textarea id="input-2"></textarea>
+      <div id="input-3" contenteditable="true"></div>
+      <span id="input-4" contenteditable="true"></div>
+    </form>
+  </section>
+
+</body>
+<script>
+  // Get the variables section
+  var variablesSection = document.getElementById("variables");
+
+  // Define the number of variable divs to add
+  var numberOfVariables = 30;
+
+  // Loop to create and append the variable divs
+  for (var i = 0; i < numberOfVariables; i++) {
+    // Create a new variable div
+    var variableDiv = document.createElement("div");
+    
+    // Set the content of the variable div
+    variableDiv.textContent = "variable content " + i;
+    
+    // Set the id of the variable div
+    variableDiv.id = "variable-" + i;
+    
+    // Append the variable div to the variables section
+    variablesSection.appendChild(variableDiv);
+  }
+</script>
+
+</html>

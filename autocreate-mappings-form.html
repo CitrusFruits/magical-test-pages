@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<style>
+  form {
+    margin: 32px auto;
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px;
+    label {
+      display: block;
+      margin: 0 0 8px 0;
+      font-family: sans-serif;
+      font-weight: bold;
+    }
+    input {
+      display: block;
+      margin: 0 0 16px 0;
+      padding: 4px;
+    }
+  }
+</style>
+
+<body>
+  <section id="form">
+    <form>
+    </form>
+  </section>
+</body>
+<script>
+  // Quickly generate a form with 50 inputs.
+  const formEl = document.querySelector('form');
+  for (let i = 0; i < 50; i++) {
+    formEl.innerHTML += `<label for="input-${i}">${createLabel(i)}</label><input id="input-${i}" type="text">`;
+  }
+
+  function createLabel(i) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const labelModifier = urlParams.get('labelModifier');
+    if (labelModifier === 'short') {
+      return `V${i}`;
+    }
+    if (labelModifier === 'long') {
+      return `Long label for: New Variable ${i}  New Variable ${i} New Variable ${i} New Variable ${i} New Variable ${i}`;
+    }
+    return `New Variable ${i}`;
+  }
+</script>
+
+</html>

